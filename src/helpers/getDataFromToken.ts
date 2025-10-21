@@ -22,7 +22,8 @@ export async function getdataFromToken(req: NextRequest): Promise<TokenPayload |
     const { payload } = await jwtVerify(token, secret);
     
     const decoded = payload as TokenPayload;
-    console.log('Decoded token from getDataFromToken:', decoded);
+    console.log('Decoded token from getDataFromToken:', decoded); 
+    
     
     if (!decoded || !decoded.id) {
       throw new Error('Invalid token data');
