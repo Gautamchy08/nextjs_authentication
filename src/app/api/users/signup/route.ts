@@ -2,6 +2,7 @@ import { connect } from "@/app/dbConfig/dbConfig";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { sendEmail } from "@/helpers/mailer";
 
 // Connect to database
 await connect();
@@ -48,6 +49,14 @@ export async function POST(req: NextRequest) {
         // Remove password from response
         const userObject = savedUser.toObject();
         delete userObject.password;
+
+        // send verification email
+
+        await sendEmail({
+            email: userObject.email,
+            emailType: 'VERIFY',
+            userId: userObject._id.toString()
+        });
 
         return NextResponse.json(
             { 
